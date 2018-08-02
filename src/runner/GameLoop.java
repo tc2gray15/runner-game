@@ -1,14 +1,16 @@
 package runner;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.JTextField;
 
-public class Player extends javax.swing.JPanel implements ActionListener, KeyListener {
+public class GameLoop extends javax.swing.JPanel implements ActionListener, KeyListener {
     
     static int xPos = 10;
     static int yPos = 120;
@@ -26,22 +28,29 @@ public class Player extends javax.swing.JPanel implements ActionListener, KeyLis
     private final int HEIGHT = 20;
     Sound sounds;
     JTextField j;
+    MainChar goodGuy;
+    Obstacle badGuy;
 
     Timer timer = new Timer(5, this);
     
-    public Player() {
+    public GameLoop() {
+        goodGuy = new MainChar();
+        badGuy = new Obstacle();
         setFocusable(true);
         addKeyListener(this);
         sounds = new Sound();
         firstJump = 0;
     }
     
+    @Override
     public void paintComponent(Graphics g)
     {
+        Graphics2D g2 = (Graphics2D) g;    
         super.paintComponent(g);
-        g.drawRect(xPos, yPos, WIDTH, HEIGHT);
-        g.fillRect(xPos, yPos, WIDTH, HEIGHT);
-        g.drawRect(xObst, yObst, 10, 10);
+        goodGuy.setLocation(10, yPos);
+        badGuy.setLocation(xObst, 130);
+        g2.draw(goodGuy);
+        g2.draw(badGuy);
         g.drawLine(0, 140, 500, 140);
     }
     
@@ -89,6 +98,12 @@ public class Player extends javax.swing.JPanel implements ActionListener, KeyLis
             holdScore = score;
         }
         
+        if(goodGuy.intersects(badGuy))
+        {
+            timer.stop();
+            reset();
+        }
+        
         score++;
         repaint();
     }
@@ -121,4 +136,20 @@ public class Player extends javax.swing.JPanel implements ActionListener, KeyLis
     {
         return;
     }
+    
+    private void reset()
+    {
+        sounds.stopMusic();
+        xPos = 10;
+        yPos = 120;
+        xObst = 500;
+        yObst = 130;
+        holdScore = 0;
+        xObstVel = 1;
+        i = 0;
+        firstJump = 0;
+        score = 0;
+        jumpBool = false;
+    }
+    
 }

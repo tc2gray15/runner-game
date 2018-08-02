@@ -2,15 +2,10 @@ package runner;
 
 import java.awt.Color;
 import javax.swing.*;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class Runner {
 
-    private static Player component;
+    private static GameLoop component;
     
     public static void main(String[] args) 
     {
@@ -19,7 +14,7 @@ public class Runner {
     
     private static void addFrame()
     {
-        component = new Player();
+        component = new GameLoop();
         component.setBackground(Color.PINK);
         JFrame f = new JFrame();
         f.setTitle("Runner");

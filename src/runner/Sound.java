@@ -41,4 +41,9 @@ public class Sound {
         } 
     }
     
+    public void stopMusic()
+    {
+        AudioPlayer.player.stop(as);
+    }
+    
 }
